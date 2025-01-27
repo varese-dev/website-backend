@@ -2,6 +2,7 @@ package rest.resources;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import persistence.model.Event;
@@ -22,5 +23,12 @@ public class EventResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Event> getAllEvents() {
         return EventRepository.getAllEvents();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Event getEventById(@PathParam("id") String id) {
+        return EventRepository.findById(id);
     }
 }
