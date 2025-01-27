@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import persistence.model.Event;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @ApplicationScoped
@@ -31,6 +32,11 @@ public class EventService implements PanacheRepository<Event> {
     @Transactional
     public int update(String id, Event event) {
         return update("title = ?1, description = ?2, date = ?3 where id = ?4", event.getTitle(), event.getDescription(), event.getDate(), id);
+    }
+
+    public List<Event> findByDate(String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return list("date", localDate);
     }
 }
 

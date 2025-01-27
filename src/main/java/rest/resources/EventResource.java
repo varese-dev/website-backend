@@ -29,6 +29,13 @@ public class EventResource {
         return eventService.findById(id);
     }
 
+    @GET
+    @Path("date/{date}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Event> getEventByDate(@PathParam("date") String date) {
+        return eventService.findByDate(date);
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
