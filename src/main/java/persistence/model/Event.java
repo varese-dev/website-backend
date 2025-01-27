@@ -15,7 +15,7 @@ public class Event {
     private String title;
     private String description;
     private LocalDate date;
-    @Column(name = "partners_id")
+    @Column(name = "partner_id")
     private String partnerId;
 
     public Event(String id, String title, String description, LocalDate date, String partnerId) {
@@ -68,5 +68,15 @@ public class Event {
 
     public void setPartnerId(String partnerId) {
         this.partnerId = partnerId;
+    }
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                ", partnerId='" + partnerId + '\'' +
+                '}';
     }
 }
