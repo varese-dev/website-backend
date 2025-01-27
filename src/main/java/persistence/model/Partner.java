@@ -17,9 +17,9 @@ public class Partner {
     private String website;
     private String email;
     private String image;
-    private Value  value = Value.BRONZE;
+    private String  value;
 
-    public Partner(String id, String name, String description, String place, String website, String email, String image, Value value) {
+    public Partner(String id, String name, String description, String place, String website, String email, String image, String value) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -90,11 +90,11 @@ public class Partner {
         this.image = image;
     }
 
-    public Value getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Value value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }
