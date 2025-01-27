@@ -18,6 +18,11 @@ public class EventService implements PanacheRepository<Event> {
         return find("id", id).firstResult();
     }
 
+    public List<Event> findByDate(String date) {
+        LocalDate localDate = LocalDate.parse(date);
+        return list("date", localDate);
+    }
+
     @Transactional
     public Event save(Event event) {
         persist(event);
@@ -32,11 +37,6 @@ public class EventService implements PanacheRepository<Event> {
     @Transactional
     public int update(String id, Event event) {
         return update("title = ?1, description = ?2, date = ?3 where id = ?4", event.getTitle(), event.getDescription(), event.getDate(), id);
-    }
-
-    public List<Event> findByDate(String date) {
-        LocalDate localDate = LocalDate.parse(date);
-        return list("date", localDate);
     }
 }
 

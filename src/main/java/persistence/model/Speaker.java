@@ -11,7 +11,7 @@ public class Speaker {
     @Id
     @Column(columnDefinition = "CHAR(36)")
     private String id;
-    @Column(name = "users_id")
+    @Column(name = "user_id")
     private String userId;
     private String name;
     private String surname;
