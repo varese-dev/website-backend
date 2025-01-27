@@ -3,7 +3,6 @@ package rest.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import persistence.model.Partner;
-import persistence.model.Speaker;
 import service.PartnerService;
 
 import java.util.List;
@@ -27,6 +26,13 @@ public class PartnerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Partner getPartnerById(@PathParam("id") String id) {
         return partnerService.findById(id);
+    }
+
+    @GET
+    @Path("/value/{value}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Partner> getPartnerByName(@PathParam("value") String value) {
+        return partnerService.findByValue(value);
     }
 
     @POST

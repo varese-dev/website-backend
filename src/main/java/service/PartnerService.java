@@ -33,4 +33,8 @@ public class PartnerService implements PanacheRepository<Partner> {
     public int update(String id, Partner partner) {
         return update("name = ?1, description = ?2, place = ?3, website = ?4, email = ?5, image = ?6, value = ?7 where id = ?8", partner.getName(), partner.getDescription(), partner.getPlace(), partner.getWebsite(), partner.getEmail(), partner.getImage(), partner.getValue(), id);
     }
+
+    public List<Partner> findByValue(String value) {
+        return list("value", value);
+    }
 }
