@@ -22,5 +22,10 @@ public class EventService implements PanacheRepository<Event> {
         persist(event);
         return event;
     }
+
+    @Transactional
+    public void deleteById(String id) {
+        delete("id", id);
+    }
 }
 

@@ -36,4 +36,10 @@ public class EventResource {
     public Event createEvent(Event event) {
         return eventService.save(event);
     }
+
+    @DELETE
+    @Path("/{id}")
+    public void deleteEvent(@PathParam("id") String id) {
+        eventService.deleteById(id);
+    }
 }
