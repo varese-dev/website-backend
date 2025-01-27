@@ -9,7 +9,6 @@ import java.util.List;
 
 @Path("/speakers")
 public class SpeakerResource {
-
     private final SpeakerService speakerService;
 
     public SpeakerResource(SpeakerService speakerService) {
