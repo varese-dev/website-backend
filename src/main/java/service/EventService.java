@@ -27,5 +27,10 @@ public class EventService implements PanacheRepository<Event> {
     public void deleteById(String id) {
         delete("id", id);
     }
+
+    @Transactional
+    public int update(String id, Event event) {
+        return update("title = ?1, description = ?2, date = ?3 where id = ?4", event.getTitle(), event.getDescription(), event.getDate(), id);
+    }
 }
 

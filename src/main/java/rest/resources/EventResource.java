@@ -3,7 +3,6 @@ package rest.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import persistence.model.Event;
-import persistence.repository.EventRepository;
 import service.EventService;
 
 import java.util.List;
@@ -41,5 +40,13 @@ public class EventResource {
     @Path("/{id}")
     public void deleteEvent(@PathParam("id") String id) {
         eventService.deleteById(id);
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int updateEvent(@PathParam("id") String id, Event event) {
+        return eventService.update(id, event);
     }
 }
