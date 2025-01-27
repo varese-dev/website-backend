@@ -1,0 +1,35 @@
+package service;
+
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
+import persistence.model.Talk;
+
+import java.util.List;
+
+@ApplicationScoped
+public class TalkService implements PanacheRepository<Talk> {
+    public List<Talk> getAllTalks() {
+        return listAll();
+    }
+
+    public Talk findById(String id) {
+        return find("id", id).firstResult();
+    }
+
+    @Transactional
+    public Talk save(Talk talk) {
+        persist(talk);
+        return talk;
+    }
+
+    @Transactional
+    public void deleteById(String id) {
+        delete("id", id);
+    }
+
+    @Transactional
+    public int update(String id, Talk talk) {
+        return update("title = ?1, description = ?2 where id = ?3", talk.getTitle(), talk.getDescription(), id);
+    }
+}
