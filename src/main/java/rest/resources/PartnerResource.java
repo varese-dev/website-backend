@@ -2,7 +2,9 @@ package rest.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import persistence.model.Event;
 import persistence.model.Partner;
+import service.EventService;
 import service.PartnerService;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 @Path("/partners")
 public class PartnerResource {
     private final PartnerService partnerService;
+    private final EventService eventService;
 
-    public PartnerResource(PartnerService partnerService) {
+    public PartnerResource(PartnerService partnerService, EventService eventService) {
         this.partnerService = partnerService;
+        this.eventService = eventService;
     }
 
     @GET
@@ -26,6 +30,13 @@ public class PartnerResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Partner getPartnerById(@PathParam("id") String id) {
         return partnerService.findById(id);
+    }
+
+    @GET
+    @Path("/{id}/events")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Event> getEventsByPartnerId(@PathParam("id") String partnerId) {
+        return eventService.getEventsByPartnerId(partnerId);
     }
 
     @GET

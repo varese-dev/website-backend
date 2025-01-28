@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import persistence.model.Event;
+import persistence.model.Partner;
 import persistence.model.Talk;
 
 import java.time.LocalDate;
@@ -32,6 +33,10 @@ public class EventService implements PanacheRepository<Event> {
                                 "WHERE ts.speaker_id = :speakerId", Event.class)
                 .setParameter("speakerId", speakerId)
                 .getResultList();
+    }
+
+    public List<Event> getEventsByPartnerId(String partnerId) {
+        return list("partnerId", partnerId);
     }
 
     @Transactional
