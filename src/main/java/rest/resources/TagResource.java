@@ -3,16 +3,20 @@ package rest.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import persistence.model.Tag;
+import persistence.model.Talk;
 import service.TagService;
+import service.TalkService;
 
 import java.util.List;
 
 @Path("/tags")
 public class TagResource {
     private final TagService tagService;
+    private final TalkService talkService;
 
-    public TagResource(TagService tagService) {
+    public TagResource(TagService tagService, TalkService talkService) {
         this.tagService = tagService;
+        this.talkService = talkService;
     }
 
     @GET
@@ -26,6 +30,13 @@ public class TagResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Tag getTagById(@PathParam("id") String id) {
         return tagService.findById(id);
+    }
+
+    @GET
+    @Path("/{id}/talks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Talk> getTagsByTalkId(@PathParam("id") String tagId) {
+        return talkService.getTagsByTalkId(tagId);
     }
 
     @POST

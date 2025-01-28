@@ -17,6 +17,15 @@ public class TagService implements PanacheRepository<Tag> {
         return find("id", id).firstResult();
     }
 
+    public List<Tag> getTagsByTalkId(String talkId) {
+        return getEntityManager().createNativeQuery(
+                        "SELECT t.* FROM tag t " +
+                                "JOIN talk_tag et ON t.id = et.tag_id " +
+                                "WHERE et.talk_id = :talkId", Tag.class)
+                .setParameter("talkId", talkId)
+                .getResultList();
+    }
+
     @Transactional
     public Tag save(Tag tag) {
         persist(tag);
