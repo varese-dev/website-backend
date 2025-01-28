@@ -17,6 +17,15 @@ public class TalkService implements PanacheRepository<Talk> {
         return find("id", id).firstResult();
     }
 
+    public List<Talk> getTalksByEventId(String eventId) {
+        return getEntityManager().createNativeQuery(
+                        "SELECT t.* FROM talk t " +
+                                "JOIN event_talk et ON t.id = et.talk_id " +
+                                "WHERE et.event_id = :eventId", Talk.class)
+                .setParameter("eventId", eventId)
+                .getResultList();
+    }
+
     @Transactional
     public Talk save(Talk talk) {
         persist(talk);

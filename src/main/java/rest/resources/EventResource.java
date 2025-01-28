@@ -3,7 +3,9 @@ package rest.resources;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import persistence.model.Event;
+import persistence.model.Talk;
 import service.EventService;
+import service.TalkService;
 
 import java.util.List;
 
@@ -11,9 +13,11 @@ import java.util.List;
 public class EventResource {
 
     private final EventService eventService;
+    private final TalkService talkService;
 
-    public EventResource(EventService eventService) {
+    public EventResource(EventService eventService, TalkService talkService) {
         this.eventService = eventService;
+        this.talkService = talkService;
     }
 
     @GET
@@ -27,6 +31,13 @@ public class EventResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Event getEventById(@PathParam("id") String id) {
         return eventService.findById(id);
+    }
+
+    @GET
+    @Path("/{id}/talks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Talk> getTalksByEventId(@PathParam("id") String eventId) {
+        return talkService.getTalksByEventId(eventId);
     }
 
     @GET
