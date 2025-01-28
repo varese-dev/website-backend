@@ -24,6 +24,16 @@ public class EventService implements PanacheRepository<Event> {
         return list("date", localDate);
     }
 
+    public List<Event> getEventsBySpeakerId(String speakerId) {
+        return getEntityManager().createNativeQuery(
+                        "SELECT e.* FROM event e " +
+                                "JOIN event_talk et ON e.id = et.event_id " +
+                                "JOIN talk_speaker ts ON et.talk_id = ts.talk_id " +
+                                "WHERE ts.speaker_id = :speakerId", Event.class)
+                .setParameter("speakerId", speakerId)
+                .getResultList();
+    }
+
     @Transactional
     public Event save(Event event) {
         persist(event);

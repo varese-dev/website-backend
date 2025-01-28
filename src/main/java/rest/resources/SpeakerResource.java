@@ -2,17 +2,25 @@ package rest.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import persistence.model.Event;
 import persistence.model.Speaker;
+import persistence.model.Talk;
+import service.EventService;
 import service.SpeakerService;
+import service.TalkService;
 
 import java.util.List;
 
 @Path("/speakers")
 public class SpeakerResource {
     private final SpeakerService speakerService;
+    private final EventService eventService;
+    private final TalkService talkService;
 
-    public SpeakerResource(SpeakerService speakerService) {
+    public SpeakerResource(SpeakerService speakerService, EventService eventService, TalkService talkService) {
         this.speakerService = speakerService;
+        this.eventService = eventService;
+        this.talkService = talkService;
     }
 
     @GET
@@ -27,6 +35,21 @@ public class SpeakerResource {
     public Speaker getSpeakerById(@PathParam("id") String id) {
         return speakerService.findById(id);
     }
+
+    @GET
+    @Path("/{id}/events")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Event> getEventsBySpeakerId(@PathParam("id") String speakerId) {
+        return eventService.getEventsBySpeakerId(speakerId);
+    }
+
+    @GET
+    @Path("/{id}/talks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Talk> getSpeakersByTalkId(@PathParam("id") String speakerId) {
+        return talkService.getTalksBySpeakerId(speakerId);
+    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
