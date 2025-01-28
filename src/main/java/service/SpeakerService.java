@@ -17,6 +17,15 @@ public class SpeakerService implements PanacheRepository<Speaker> {
         return find("id", id).firstResult();
     }
 
+    public List<Speaker> getSpeakerByTalkId(String talkId) {
+        return getEntityManager().createNativeQuery(
+                        "SELECT t.* FROM speaker t " +
+                                "JOIN talk_speaker et ON t.id = et.speaker_id " +
+                                "WHERE et.talk_id = :talkId", Speaker.class)
+                .setParameter("talkId", talkId)
+                .getResultList();
+    }
+
     @Transactional
     public Speaker save(Speaker speaker) {
         persist(speaker);

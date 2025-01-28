@@ -2,7 +2,9 @@ package rest.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import persistence.model.Speaker;
 import persistence.model.Talk;
+import service.SpeakerService;
 import service.TalkService;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 @Path("/talks")
 public class TalkResource {
     private final TalkService talkService;
+    private final SpeakerService speakerService;
 
-    public TalkResource(TalkService talkService) {
+    public TalkResource(TalkService talkService, SpeakerService speakerService) {
         this.talkService = talkService;
+        this.speakerService = speakerService;
     }
 
     @GET
@@ -26,6 +30,13 @@ public class TalkResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Talk getTalkById(@PathParam("id") String id) {
         return talkService.findById(id);
+    }
+
+    @GET
+    @Path("/{id}/speakers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Speaker> getSpeakersByTalkId(@PathParam("id") String talkId) {
+        return speakerService.getSpeakerByTalkId(talkId);
     }
 
     @POST
