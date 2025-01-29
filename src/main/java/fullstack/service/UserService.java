@@ -2,9 +2,7 @@ package fullstack.service;
 
 import fullstack.persistence.UserRepository;
 import fullstack.persistence.model.Role;
-import fullstack.persistence.model.User;
 import fullstack.service.exception.UserNotFoundException;
-import fullstack.util.ErrorMessages;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

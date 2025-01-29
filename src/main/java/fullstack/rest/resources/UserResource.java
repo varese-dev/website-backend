@@ -1,6 +1,5 @@
 package fullstack.rest.resources;
 
-import fullstack.persistence.model.User;
 import fullstack.service.UserService;
 import fullstack.service.exception.UserNotFoundException;
 import jakarta.inject.Inject;

@@ -1,6 +1,5 @@
 package fullstack.persistence;
 
-import fullstack.persistence.model.User;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
