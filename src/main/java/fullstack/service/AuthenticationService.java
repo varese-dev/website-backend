@@ -1,7 +1,8 @@
 package fullstack.service;
 
-import fullstack.persistence.UserRepository;
-import fullstack.persistence.UserSessionRepository;
+import fullstack.persistence.repository.UserRepository;
+import fullstack.persistence.repository.UserSessionRepository;
+import fullstack.persistence.model.User;
 import fullstack.persistence.model.UserSession;
 import fullstack.rest.model.CreateUserRequest;
 import fullstack.rest.model.LoginRequest;
@@ -109,9 +110,12 @@ public class AuthenticationService {
 
     @Transactional
     public void verifyPhone(String token, String phone) throws UserCreationException {
-        Optional<User> optionalUser = userRepository.findByPhone(phone);
-        User user = optionalUser.orElseThrow(() -> new UserCreationException("Utente non trovato."));
+        Optional<User> userOpt = userRepository.findByPhone(phone);
+        if (userOpt.isEmpty()) {
+            throw new UserCreationException("Utente non trovato.");
+        }
 
+        User user = userOpt.get();
         if (user.getTokenPhone() == null || !user.getTokenPhone().equals(token)) {
             throw new UserCreationException("Token di verifica non valido.");
         }
@@ -125,7 +129,7 @@ public class AuthenticationService {
     public LoginResponse authenticate(LoginRequest request) throws UserNotFoundException, WrongPasswordException, SessionAlreadyExistsException {
         Validation.validateLoginRequest(request);
 
-        Optional<User> optionalUser = userRepository.findByEmailOrPhone(request.getEmailOrPhone());
+        Optional<User> optionalUser = userRepository.findByEmailOrPhone(request.getEmail(), request.getPhoneNumber());
         User user = optionalUser.orElseThrow(() -> new UserNotFoundException("Utente non trovato."));
 
         if (!user.getEmailVerified() && !user.getPhoneVerified()) {
@@ -158,7 +162,7 @@ public class AuthenticationService {
         UserSession userSession = new UserSession();
         userSession.setSessionId(sessionId);
         userSession.setUser(user);
-        userSession.setExpiresAt(LocalDateTime.now().plusHours(1));
+        userSession.setExpiresAt(LocalDateTime.now().plusHours(24));
         userSessionRepository.persist(userSession);
         return sessionId;
     }

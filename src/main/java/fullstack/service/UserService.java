@@ -1,13 +1,17 @@
 package fullstack.service;
 
-import fullstack.persistence.UserRepository;
+import fullstack.persistence.repository.UserRepository;
+import fullstack.persistence.repository.UserSessionRepository;
 import fullstack.persistence.model.Role;
+import fullstack.persistence.model.User;
+import fullstack.persistence.model.UserSession;
 import fullstack.service.exception.UserNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -18,6 +22,12 @@ public class UserService {
 
     @Inject
     NotificationService notificationService;
+    private final UserSessionRepository userSessionRepository;
+
+    public UserService(UserSessionRepository userSessionRepository) {
+        this.userSessionRepository = userSessionRepository;
+    }
+
 
     public User getUserById(String userId) throws UserNotFoundException {
         User user = userRepository.findById(userId);
@@ -27,16 +37,13 @@ public class UserService {
         return user;
     }
 
-    // Aggiorna il profilo utente
     @Transactional
     public void updateProfile(String userId, User updatedUser) throws UserNotFoundException {
         User user = getUserById(userId);
 
-        // Aggiorna nome e cognome
         user.setName(updatedUser.getName());
         user.setSurname(updatedUser.getSurname());
 
-        // Se l'email è stata modificata, richiedi una nuova verifica
         if (updatedUser.getEmail() != null && !updatedUser.getEmail().equals(user.getEmail())) {
             user.setEmail(updatedUser.getEmail());
             user.setEmailVerified(false);
@@ -45,7 +52,6 @@ public class UserService {
             notificationService.sendVerificationEmail(user, verificationLink);
         }
 
-        // Se il telefono è stato modificato, richiedi una nuova verifica
         if (updatedUser.getPhone() != null && !updatedUser.getPhone().equals(user.getPhone())) {
             user.setPhone(updatedUser.getPhone());
             user.setPhoneVerified(false);
@@ -56,38 +62,45 @@ public class UserService {
         userRepository.persist(user);
     }
 
-    // Elimina un utente
     @Transactional
     public void deleteUser(String userId) throws UserNotFoundException {
         User user = getUserById(userId);
         userRepository.delete(user);
     }
 
-    // Lista di tutti gli utenti
     public List<User> listUsers() {
         return userRepository.listAll();
     }
 
-    // Promuovi un utente a admin
     @Transactional
     public void promoteUserToAdmin(String userId) throws UserNotFoundException {
         User user = getUserById(userId);
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.admin);
         userRepository.persist(user);
     }
 
-    // Retrocedi un utente a user
     @Transactional
     public void demoteUserToUser(String userId) throws UserNotFoundException {
         User user = getUserById(userId);
-        user.setRole(Role.USER);
+        user.setRole(Role.user);
         userRepository.persist(user);
     }
 
-    // Genera un OTP per la verifica del telefono
     private String generateOtp() {
         SecureRandom random = new SecureRandom();
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
+    }
+
+    public Role getUserRoleBySessionId(String sessionId) throws UserNotFoundException {
+        Optional<UserSession> userSessionOptional = userSessionRepository.findBySessionId(sessionId);
+        if (userSessionOptional.isEmpty()) {
+            throw new UserNotFoundException("Session not found or expired.");
+        }
+        UserSession userSession = userSessionOptional.get();
+        if (userSession.getUser() == null) {
+            throw new UserNotFoundException("User associated with the session not found.");
+        }
+        return userSession.getUser().getRole();
     }
 }
