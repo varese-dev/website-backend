@@ -50,11 +50,6 @@ public class UserResource {
         }
     }
 
-    @GET
-    public Response listUsers() {
-        List<User> users = userService.listUsers();
-        return Response.ok(users).build();
-    }
 
     @PUT
     @Path("/{userId}/promote")

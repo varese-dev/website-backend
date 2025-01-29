@@ -1,5 +1,6 @@
 package fullstack.service;
 
+import fullstack.persistence.model.Talk;
 import fullstack.persistence.repository.TalkRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
