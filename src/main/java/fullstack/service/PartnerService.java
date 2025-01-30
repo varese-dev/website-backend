@@ -26,7 +26,7 @@ public class PartnerService implements PanacheRepository<Partner> {
     }
 
     @Transactional
-    public Partner deleteById(String id) {
+    public Partner delete(String id) {
         delete("id", id);
         return null;
     }
