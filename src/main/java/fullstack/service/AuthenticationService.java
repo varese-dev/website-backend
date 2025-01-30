@@ -4,8 +4,6 @@ import fullstack.persistence.repository.UserRepository;
 import fullstack.persistence.repository.UserSessionRepository;
 import fullstack.persistence.model.User;
 import fullstack.persistence.model.UserSession;
-import fullstack.persistence.repository.UserRepository;
-import fullstack.persistence.repository.UserSessionRepository;
 import fullstack.rest.model.CreateUserRequest;
 import fullstack.rest.model.LoginRequest;
 import fullstack.rest.model.LoginResponse;
@@ -16,6 +14,7 @@ import fullstack.util.Validation;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Optional;
