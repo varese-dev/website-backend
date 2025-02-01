@@ -23,16 +23,12 @@ import static fullstack.util.Messages.ADMIN_REQUIRED;
 
 @ApplicationScoped
 public class EventService implements PanacheRepository<Event> {
-    private final EventRepository eventRepository;
-    private final UserService userService;
-    private final TalkRepository talkRepository;
-
     @Inject
-    public EventService(EventRepository eventRepository, UserService userService, TalkRepository talkRepository) {
-        this.eventRepository = eventRepository;
-        this.userService = userService;
-        this.talkRepository = talkRepository;
-    }
+    EventRepository eventRepository;
+    @Inject
+    UserService userService;
+    @Inject
+    TalkRepository talkRepository;
 
     public List<Event> getAllEvents() throws NoContentException {
         List<Event> events = listAll();
