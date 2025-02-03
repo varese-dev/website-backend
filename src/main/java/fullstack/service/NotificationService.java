@@ -64,6 +64,7 @@ public class NotificationService {
         }
     }
 
+
     public void sendBookingConfirmationEmail(User user, Event event) {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new IllegalArgumentException(INVALID_EMAIL);
