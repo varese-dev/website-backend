@@ -47,7 +47,7 @@ public class UserService {
             throw new AdminAccessException(ADMIN_REQUIRED);
         }
         return userRepository.listAll().stream()
-                .map(user -> new AdminResponse(user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getRole().name()))
+                .map(user -> new AdminResponse(user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getRole()))
                 .collect(Collectors.toList());
     }
 
