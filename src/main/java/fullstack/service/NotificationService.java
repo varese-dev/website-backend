@@ -68,17 +68,23 @@ public class NotificationService {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             throw new IllegalArgumentException("L'utente non ha un'email valida.");
         }
+
         String emailContent = "<h1>Conferma Prenotazione</h1>" +
                 "<p>Ciao " + user.getName() + " " + user.getSurname() + ",</p>" +
-                "<p>La tua prenotazione per l'evento \"" + event.getTitle() + "\" è stata confermata.</p>" +
-                "<p>Dettagli dell'evento:</p>" +
-                "<li><strong>Data:</strong> " + event.getDate() + "</li>" +
-                "<li><strong>Descrizione:</strong> " + event.getDescription() + "</li>";
+                "<p>La tua prenotazione per l'evento <strong>\"" + event.getTitle() + "\"</strong> è stata confermata.</p>" +
+                "<h2>Dettagli dell'evento:</h2>" +
+                "<ul>" +
+                "<li><strong>Data e orario:</strong> " + event.getDate() + "</li>" +
+                "<li><strong>Indirizzo:</strong> " + event.getAddress() + "</li>" +
+                "<li><strong>Descrizione:</strong> " + event.getDescription() + "</li>" +
+                "<li><strong>Posti totali:</strong> " + event.getMaxParticipants() + "</li>" +
+                "<li><strong>Partecipanti attuali:</strong> " + event.getParticipantsCount() + "</li>" +
+                "</ul>" +
+                "<p>Ti aspettiamo!</p>";
 
         mailer.send(Mail.withHtml(user.getEmail(), "Conferma Prenotazione Evento", emailContent));
         System.out.println("Email inviata correttamente a: " + user.getEmail());
     }
-
 
     public void sendBookingConfirmationSms(User user, Event event) {
         if (user.getPhone() == null || user.getPhone().isEmpty()) {
